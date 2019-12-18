@@ -7,6 +7,7 @@ export class Producer {
     });
     this.subscribe = subscribe;
     this.update = update;
+    this.set = set;
     this.tickCounter = 0;
     this.tickInterval = 5;
   }
@@ -14,16 +15,22 @@ export class Producer {
   activate() {
     return this.update((store) => {
       store.active = true;
+      this.onActivate();
       return store;
     });
   }
 
+  onActivate() { }
+
   deactivate() {
     return this.update((store) => {
       store.active = false;
+      this.onDeactivate();
       return store;
     });
   }
+
+  onDeactivate() { }
 
   produce() {
     const unsubscribe = this.subscribe(({ active }) => {
@@ -31,11 +38,11 @@ export class Producer {
       this.tickCounter++;
       while (this.tickCounter >= this.tickInterval) {
         this.tickCounter -= this.tickInterval;
-        this.produces();
+        this.onTick();
       }
     });
     unsubscribe();
   }
 
-  produces() { }
+  onTick() { }
 }

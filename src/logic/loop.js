@@ -7,12 +7,16 @@ export class Loop {
     this.tickMethods = null;
   }
 
-  load() {
-    Object.entries(inventory).forEach(([key, item]) => {
+  load(state) {
+    Object.entries(state).forEach(([key, item]) => {
       const json = localStorage.getItem(key);
-      if (json) store.set(JSON.parse(json));
-      store.subscribe(value => localStorage.setItem(key, JSON.stringify(value)));
+      if (json) item.set(JSON.parse(json));
+
+      item.subscribe((value) => {
+        localStorage.setItem(key, JSON.stringify(value));
+      });
     });
+    return this;
   }
 
   start() {
@@ -47,5 +51,3 @@ export class Loop {
     return this;
   }
 }
-
-
