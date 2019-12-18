@@ -4,6 +4,7 @@ export class Producer {
   constructor() {
     const { subscribe, set, update } = writable({
       active: false,
+      unlocked: false,
     });
     this.subscribe = subscribe;
     this.update = update;
@@ -31,6 +32,16 @@ export class Producer {
   }
 
   onDeactivate() { }
+
+  unlock() {
+    return this.update((store) => {
+      store.unlocked = true;
+      this.onUnlock();
+      return store;
+    });
+  }
+
+  onUnlock() { }
 
   produce() {
     const unsubscribe = this.subscribe(({ active }) => {
