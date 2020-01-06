@@ -1,8 +1,11 @@
-import { writable } from 'svelte/store';
+import { writable } from "svelte/store";
 
 export class Resource {
   constructor() {
-    const { subscribe, set, update } = writable(0);
+    const { subscribe, set, update } = writable({
+      count: 0,
+      unlocked: false
+    });
     this.subscribe = subscribe;
     this.update = update;
     this.set = set;
@@ -11,14 +14,30 @@ export class Resource {
   }
 
   increment(num = 1) {
-    return this.update(val => val + num);
+    return this.update(store => {
+      store.count += num;
+      return store;
+    });
   }
 
   decrement(num = 1) {
-    return this.update(val => val - num);
+    return this.update(store => {
+      store.count -= num;
+      return store;
+    });
   }
 
   reset() {
-    return this.set(0);
+    return this.update(store => {
+      store.count = 0;
+      return store;
+    });
+  }
+
+  unlock() {
+    return this.update(store => {
+      store.unlocked = true;
+      return store;
+    });
   }
 }

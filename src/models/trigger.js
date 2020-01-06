@@ -4,6 +4,7 @@ export class Trigger {
   constructor() {
     const { subscribe, set, update } = writable({
       unlocked: false,
+      loaded: false,
     });
     this.subscribe = subscribe;
     this.set = set;
@@ -15,10 +16,7 @@ export class Trigger {
   when(model, number) {
     const unsubscribe = this.subscribe((store) => {
       const unsubModel = model.subscribe((value) => {
-        console.log(value >= number);
-        console.log(store.unlocked === false);
-        console.log(this.callback);
-        if (value >= number && !store.unlocked && this.callback) {
+        if (value >= number && !store.unlocked && store.loaded) {
           this.update((store) => {
             store.unlocked = true;
             return store;
@@ -36,5 +34,12 @@ export class Trigger {
   execute(callback) {
     this.callback = callback;
     return this;
+  }
+
+  load() {
+    return this.update((store) => {
+      store.loaded = true;
+      return store;
+    });
   }
 }

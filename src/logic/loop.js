@@ -12,6 +12,10 @@ export class Loop {
       const json = localStorage.getItem(key);
       if (json) item.set(JSON.parse(json));
 
+      // Logic specific to triggers, so they don't "trigger"
+      // before they're in the system
+      if (item.load) item.load();
+
       item.subscribe((value) => {
         localStorage.setItem(key, JSON.stringify(value));
       });
