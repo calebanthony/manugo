@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export class Producer {
+export class Generator {
   constructor(name) {
     const { subscribe, set, update } = writable({
       active: false,

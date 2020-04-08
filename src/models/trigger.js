@@ -15,8 +15,8 @@ export class Trigger {
 
   when(model, number) {
     const unsubscribe = this.subscribe((store) => {
-      const unsubModel = model.subscribe((value) => {
-        if (value >= number && !store.unlocked && store.loaded) {
+      const unsubModel = model.subscribe((modelStore) => {
+        if (modelStore.count >= number && !store.unlocked && store.loaded) {
           this.update((store) => {
             store.unlocked = true;
             return store;

@@ -1,7 +1,7 @@
 export class Loop {
-  constructor() {
+  constructor(tickDuration = 50) {
     this.previous = localStorage.getItem('previous') ? localStorage.getItem('previous') : Date.now();
-    this.tickDuration = 50;
+    this.tickDuration = tickDuration;
     this.tickCounter = 0;
     this.accumulatedTime = 0;
     this.tickMethods = null;
