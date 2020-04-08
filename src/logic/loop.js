@@ -50,7 +50,7 @@ export class Loop {
     }
   };
 
-  with(methods) {
+  withTickMethods(methods) {
     this.tickMethods = methods;
     return this;
   }
