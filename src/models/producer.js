@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export class Producer {
-  constructor() {
+  constructor(name) {
     const { subscribe, set, update } = writable({
       active: false,
       unlocked: false,
@@ -11,6 +11,8 @@ export class Producer {
     this.set = set;
     this.tickCounter = 0;
     this.tickInterval = 5;
+    this.name = name;
+    this.icon = null;
   }
 
   activate() {
@@ -56,4 +58,9 @@ export class Producer {
   }
 
   onTick() { }
+
+  setIcon(icon) {
+    this.icon = icon;
+    return this;
+  }
 }
