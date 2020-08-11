@@ -26,7 +26,9 @@ export class Resource {
 
   decrement(num = 1) {
     this.update(store => {
-      store.count -= num;
+      if (store.count >= num) {
+        store.count -= num;
+      }
       return store;
     });
 
