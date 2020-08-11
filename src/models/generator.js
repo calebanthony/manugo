@@ -16,31 +16,34 @@ export class Generator {
   }
 
   activate() {
-    return this.update((store) => {
-      store.active = true;
+    this.update((store) => {
       this.onActivate();
+      store.active = true;
       return store;
     });
+    return this;
   }
 
   onActivate() { }
 
   deactivate() {
-    return this.update((store) => {
-      store.active = false;
+    this.update((store) => {
       this.onDeactivate();
+      store.active = false;
       return store;
     });
+    return this;
   }
 
   onDeactivate() { }
 
   unlock() {
-    return this.update((store) => {
-      store.unlocked = true;
+    this.update((store) => {
       this.onUnlock();
+      store.unlocked = true;
       return store;
     });
+    return this;
   }
 
   onUnlock() { }
