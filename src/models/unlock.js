@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 export class Unlock {
   constructor(name) {
     const { subscribe, set, update } = writable({
-      visible: false,
+      visible: true,
       unlocked: false,
       loaded: false,
       cost: {
@@ -43,6 +43,11 @@ export class Unlock {
   }
 
   makeVisibleWhen(model, number) {
+    this.update((store) => {
+      store.visible = false;
+      return store;
+    });
+
     const unsubscribe = this.subscribe((store) => {
       const unsubModel = model.subscribe((modelStore) => {
         if (modelStore.count >= number && !store.visible && store.loaded) {

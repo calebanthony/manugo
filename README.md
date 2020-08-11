@@ -134,12 +134,15 @@ const onUnlock = () => {
 export const unlockRoughStones = new Unlock('Rough Stones')
   .setDescription('Unlocks the ability to collect rough stones.')
   .setCost(stick, 40)
+  .makeVisibleWhen(stick, 10)
   .execute(onUnlock);
 ```
 
 In this example, we have an unlock we're naming `Rough Stones` with a clear description we'll show in a tooltip.
 
 The cost of the unlock is set just like how you set criteria in `.when()` for a Trigger. The cost in this case is 40 sticks.
+
+The `makeVisibleWhen` method is an optional method that will make `$unlock.visible` false until the criteria of a specific model at a specific count is met.
 
 When the `.run()` method is called, if the player has them, 40 sticks will automatically be deducted from the player and then the `onUnlock` method will be called, which in this case unlocks `Rough Stone` for us.
 
