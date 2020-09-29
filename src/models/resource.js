@@ -25,14 +25,17 @@ export class Resource {
   }
 
   decrement(num = 1) {
+    const hasEnough = false;
+
     this.update(store => {
       if (store.count >= num) {
         store.count -= num;
+        hasEnough = true;
       }
       return store;
     });
 
-    return this;
+    return hasEnough;
   }
 
   reset() {

@@ -12,8 +12,8 @@ export class Loop {
       const json = localStorage.getItem(key);
       if (json) item.set(JSON.parse(json));
 
-      // Logic specific to triggers, so they don't "trigger"
-      // before they're in the system
+      // Logic specific to triggers, so they don't "trigger" prematurely
+      // Also loads the dependencies of generators
       if (item.load) item.load();
 
       item.subscribe((value) => {

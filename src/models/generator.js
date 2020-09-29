@@ -13,6 +13,16 @@ export class Generator {
     this.tickInterval = 5;
     this.name = name;
     this.icon = null;
+    this.flavor = null;
+    this.dependencies = {};
+  }
+
+  load() {
+    Object.keys(this.dependencies).forEach((dep) => {
+      this.dependencies[dep].subscribe((store) => {
+        this.dependencies[dep] = store;
+      });
+    })
   }
 
   activate() {
@@ -64,6 +74,11 @@ export class Generator {
 
   setIcon(icon) {
     this.icon = icon;
+    return this;
+  }
+
+  setFlavor(text) {
+    this.flavor = text;
     return this;
   }
 }

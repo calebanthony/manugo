@@ -44,7 +44,13 @@ All resources start with a default of 0 count.
 
 `increment()` increases the count by 1 by default, but you can use `increment(100)` to increase it by 100, for example.
 
-`decrement()` works the same way as `increment()`, just backwards!
+`decrement()` works the same way as `increment()`, just backwards! It also returns `true` or `false` depending on if there are enough resources to decrement by. You can use this to check single cases of resources while exchanging, for example turning 1 Log into 2 Sticks. If you need to check more than one resource, check out `dependencies` on Generators below.
+
+```js
+if (log.decrement()) {
+  stick.increment(2);
+}
+```
 
 `reset()` sets the resource count back to 0.
 
@@ -67,6 +73,15 @@ class StickProducer extends Generator {
   constructor(name) {
     super(name); // The name is a required parameter on every generator, don't forget to include it!
     this.tickInterval = 5;
+
+    // This isn't necessary for this use case, but you can define dependencies to access their store values.
+    // For example, if we needed to make sure there are a certain number of sticks before doing something:
+    /**
+     * if (this.dependencies.stick.count >= 3) {
+     *   doSomething();
+     * }
+     */
+    this.dependencies { stick };
   }
 
   // Put your own custom logic here!
