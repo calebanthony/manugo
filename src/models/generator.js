@@ -2,19 +2,23 @@ import { writable } from 'svelte/store';
 
 export class Generator {
   constructor(name) {
-    const { subscribe, set, update } = writable({
+    const { subscribe, update } = writable({
       active: false,
       unlocked: false,
     });
     this.subscribe = subscribe;
     this.update = update;
-    this.set = set;
     this.tickCounter = 0;
     this.tickInterval = 5;
     this.name = name;
     this.icon = null;
     this.flavor = null;
     this.dependencies = {};
+  }
+
+  set(key, value) {
+    this.update((store) => Object.assign(store, { [key]: value }));
+    return this;
   }
 
   load() {

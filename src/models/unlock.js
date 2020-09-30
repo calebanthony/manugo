@@ -2,40 +2,41 @@ import { writable } from 'svelte/store';
 
 export class Unlock {
   constructor(name) {
-    const { subscribe, set, update } = writable({
+    const { subscribe, update } = writable({
       visible: true,
       unlocked: false,
       loaded: false,
-      cost: {
-        quantity: null,
-      },
     });
-    this.cost = {
-      model: null,
-    };
+    this.costsToUnlock = [];
     this.subscribe = subscribe;
-    this.set = set;
     this.update = update;
     this.name = name;
     this.description = null;
     this.callback = null;
   }
 
+  set(key, value) {
+    this.update((store) => Object.assign(store, { [key]: value }));
+    return this;
+  }
+
   run() {
     const unsubscribe = this.subscribe((store) => {
-      const unsubModel = this.cost.model.subscribe((modelStore) => {
-        if (modelStore.count >= store.cost.quantity && !store.unlocked && store.loaded) {
-          this.cost.model.decrement(store.cost.quantity);
-
-          this.update((store) => {
-            store.unlocked = true;
-            return store;
-          });
-
-          return this.callback();
-        }
+      this.costsToUnlock.forEach(({ model, number }) => {
+        const unsubModel = model.subscribe((modelStore) => {
+          if (modelStore.count >= number && !store.unlocked && store.loaded) {
+            model.decrement(number);
+  
+            this.update((store) => {
+              store.unlocked = true;
+              return store;
+            });
+  
+            return this.callback();
+          }
+        });
+        unsubModel();
       });
-      unsubModel();
     });
 
     unsubscribe();
@@ -65,12 +66,7 @@ export class Unlock {
   }
 
   setCost(model, number) {
-    this.cost.model = model;
-
-    this.update((store) => {
-      store.cost.quantity = number;
-      return store;
-    });
+    this.costsToUnlock.push({ model, number });
 
     return this;
   }

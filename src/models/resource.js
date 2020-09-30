@@ -2,17 +2,21 @@ import { writable } from "svelte/store";
 
 export class Resource {
   constructor(name) {
-    const { subscribe, set, update } = writable({
+    const { subscribe, update } = writable({
       count: 0,
       unlocked: false
     });
     this.subscribe = subscribe;
     this.update = update;
-    this.set = set;
     this.tickCounter = 0;
     this.tickInterval = 5;
     this.name = name;
     this.icon = null;
+  }
+
+  set(key, value) {
+    this.update(store => Object.assign(store, { [key]: value }));
+    return this;
   }
 
   increment(num = 1) {
@@ -25,7 +29,7 @@ export class Resource {
   }
 
   decrement(num = 1) {
-    const hasEnough = false;
+    let hasEnough = false;
 
     this.update(store => {
       if (store.count >= num) {

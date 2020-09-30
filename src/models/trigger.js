@@ -2,15 +2,19 @@ import { writable } from 'svelte/store';
 
 export class Trigger {
   constructor() {
-    const { subscribe, set, update } = writable({
+    const { subscribe, update } = writable({
       unlocked: false,
       loaded: false,
     });
     this.subscribe = subscribe;
-    this.set = set;
     this.update = update;
     this.criteria = null;
     this.callback = null;
+  }
+
+  set(key, value) {
+    this.update((store) => Object.assign(store, { [key]: value }));
+    return this;
   }
 
   when(model, number) {
