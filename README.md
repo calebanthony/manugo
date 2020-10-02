@@ -80,6 +80,8 @@ class StickProducer extends Generator {
      * if (this.dependencies.stick.count >= 3) {
      *   doSomething();
      * }
+     * 
+     * You can also always see the generator's own store by doing `this.dependencies.self`
      */
     this.dependencies { stick };
   }

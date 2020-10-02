@@ -23,24 +23,31 @@ export class Unlock {
 
   run() {
     const unsubscribe = this.subscribe((store) => {
-      this.costsToUnlock.forEach(({ model, number }) => {
+      const canUnlock = this.costsToUnlock.every(({ model, number }) => {
+        let hasEnough = false;
         const unsubModel = model.subscribe((modelStore) => {
-          if (modelStore.count >= number && !store.unlocked && store.loaded) {
-            model.decrement(number);
-  
-            this.update((store) => {
-              store.unlocked = true;
-              return store;
-            });
-  
-            return this.callback();
-          }
+          hasEnough = modelStore.count >= number && !store.unlocked && store.loaded;
         });
         unsubModel();
+        return hasEnough;
       });
+      
+      if (canUnlock) {
+        this.costsToUnlock.forEach(({ model, number }) => {
+            model.decrement(number);
+        });
+
+        this.update((store) => {
+          store.unlocked = true;
+          return store;
+        });
+
+        this.callback();
+      }
     });
 
     unsubscribe();
+
     return this;
   }
 

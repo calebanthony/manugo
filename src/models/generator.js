@@ -27,7 +27,11 @@ export class Generator {
       this.dependencies[dep].subscribe((store) => {
         this.dependencies[dep] = store;
       });
-    })
+    });
+
+    this.subscribe((store) => {
+      this.dependencies['self'] = store;
+    });
   }
 
   activate() {
