@@ -1,20 +1,21 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 
 export class Resource {
   constructor(name) {
-    const { subscribe, update } = writable({
+    const store = writable({
       count: 0,
       unlocked: false
     });
-    this.subscribe = subscribe;
-    this.update = update;
+    this.subscribe = store.subscribe;
+    this.update = store.update;
+    this.set = store.set;
     this.tickCounter = 0;
     this.tickInterval = 5;
     this.name = name;
     this.icon = null;
   }
 
-  set(key, value) {
+  setStore(key, value) {
     this.update(store => Object.assign(store, { [key]: value }));
     return this;
   }

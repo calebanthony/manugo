@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 
 export class Unlock {
   constructor(name) {
-    const { subscribe, update } = writable({
+    const { subscribe, update, set } = writable({
       visible: true,
       unlocked: false,
       loaded: false,
@@ -10,12 +10,13 @@ export class Unlock {
     this.costsToUnlock = [];
     this.subscribe = subscribe;
     this.update = update;
+    this.set = set;
     this.name = name;
     this.description = null;
     this.callback = null;
   }
 
-  set(key, value) {
+  setStore(key, value) {
     this.update((store) => Object.assign(store, { [key]: value }));
     return this;
   }
