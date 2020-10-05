@@ -67,6 +67,17 @@ export class Generator {
 
   onUnlock() { }
 
+  lock() {
+    this.update((store) => {
+      this.onLock();
+      store.unlocked = false;
+      return store;
+    });
+    return this;
+  }
+
+  onLock() { }
+
   produce() {
     const unsubscribe = this.subscribe(({ active }) => {
       if (!active) return;
